@@ -4,6 +4,10 @@
 DATABASE_URL="postgresql://postgres:admin@localhost:5432/auth-db?schema=public"
 CIPHER_KEY="super-key"
 SESSION_SALT="super-salt"
+APP_PORT="3000"
+REDIS_HOST="127.0.0.1"
+REDIS_PORT="6379"
+REDIS_PREFIX="myapp"
 ```
 
 # Test

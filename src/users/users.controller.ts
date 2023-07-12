@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos';
+import { Public } from 'src/utils/decorators';
 
 @Controller('users')
 export class UsersController {
@@ -23,6 +24,7 @@ export class UsersController {
     return this.userService.fetchUserById(userId);
   }
 
+  @Public()
   @Post()
   createUser(@Body() dto: CreateUserDto) {
     return this.userService.createUser(dto);

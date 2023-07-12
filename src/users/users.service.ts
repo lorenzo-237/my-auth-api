@@ -12,7 +12,6 @@ export class UsersService {
   }
 
   fetchUserById(id: number) {
-    console.log(id);
     return this.prisma.user.findUnique({
       where: {
         id: id,

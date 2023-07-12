@@ -8,4 +8,10 @@ export class TestsController {
   printHelloWorld() {
     return { message: 'Hello World' };
   }
+
+  @Public()
+  @Get('patients')
+  getPatients() {
+    return [{ id: 1 }, { id: 2 }];
+  }
 }
