@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthenticatedGuard } from './auth/guards';
+import { TestsModule } from './tests/tests.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthenticatedGuard } from './auth/guards';
     UsersModule,
     AuthModule,
     PassportModule.register({ session: true }),
+    TestsModule,
   ],
   controllers: [],
   providers: [
