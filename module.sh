@@ -10,5 +10,5 @@ fi
 echo "Let's go : $name"
 
 nest g module $name
-nest g service $name --no-spec
-nest g controller $name --no-spec
+nest g service $name
+nest g controller $name
