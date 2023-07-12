@@ -1,16 +1,19 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-// import { Public } from 'src/utils/decorators';
+import { TestsService } from './tests.service';
+import { CreatePaymentDto } from './dto/create-payment.dto';
+import { Public } from '../utils/decorators';
 
 @Controller('tests')
 export class TestsController {
-  //   @Public()
+  constructor(private testService: TestsService) {}
+  @Public()
   @Get('')
   printHelloWorld() {
     return { message: 'Hello World' };
   }
 
-  //   @Public()
+  @Public()
   @Get('patients')
   getPatients() {
     return [
@@ -19,7 +22,7 @@ export class TestsController {
     ];
   }
 
-  //   @Public()
+  @Public()
   @Get('payments')
   getPayments(@Req() request: Request, @Res() response: Response) {
     const { count, page } = request.query;
@@ -30,5 +33,11 @@ export class TestsController {
     } else {
       response.send(200);
     }
+  }
+
+  @Post('payments/create')
+  async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
+    const response = await this.testService.createPayment(createPaymentDto);
+    return response;
   }
 }
