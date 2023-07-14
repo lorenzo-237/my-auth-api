@@ -36,6 +36,7 @@ export class AuthController {
     return this.authService.loginJwt(username, password);
   }
 
+  // only for testing purposes
   @Get('session')
   async getAuthSession(@Session() session: Record<string, any>) {
     console.log(session);

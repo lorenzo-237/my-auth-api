@@ -6,6 +6,6 @@ export class ExtService {
   constructor(private userService: UsersService) {}
 
   findAllUsers() {
-    return this.userService.fetchUsers();
+    return this.userService.findAll();
   }
 }

@@ -8,6 +8,9 @@ APP_PORT="3000"
 REDIS_HOST="127.0.0.1"
 REDIS_PORT="6379"
 REDIS_PREFIX="myapp"
+JWT_SECRET="super-secret-token"
+SWAGGER_USER="lolo"
+SWAGGER_PASSWORD="lolo"
 ```
 
 # Test
