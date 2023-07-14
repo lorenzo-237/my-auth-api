@@ -3,29 +3,38 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import {
-  APP_PORT,
-  SESSION_NAME,
-  SESSION_SALT,
-  SESSION_MAX_AGE,
   REDIS_HOST,
   REDIS_PORT,
   REDIS_PREFIX,
+  SESSION_MAX_AGE,
+  SESSION_NAME,
 } from './utils/constants';
 import * as passport from 'passport';
 import RedisStore from 'connect-redis';
 import { createClient } from 'redis';
 import { ConfigService } from '@nestjs/config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
-  const configService = app.get(ConfigService);
+  const env = app.get(ConfigService);
+
+  const configSwagger = new DocumentBuilder()
+    .setTitle('My authentication API')
+    .setDescription('Cool description')
+    .setVersion('1.0')
+    .addTag('auth-api')
+    .build();
+  const document = SwaggerModule.createDocument(app, configSwagger);
+  SwaggerModule.setup('api-doc', app, document);
 
   // Initialize client.
-  const redisHost = REDIS_HOST(configService);
-  const redisPort = REDIS_PORT(configService);
-  const redisPrefix = REDIS_PREFIX(configService);
+  const redisHost = REDIS_HOST(env);
+  const redisPort = REDIS_PORT(env);
+  const redisPrefix = REDIS_PREFIX(env);
+
   const redisClient = createClient({
     socket: {
       host: redisHost,
@@ -49,7 +58,7 @@ async function bootstrap() {
         client: redisClient,
         prefix: `${redisPrefix}:`,
       }),
-      secret: SESSION_SALT,
+      secret: env.get('SESSION_SALT'),
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -60,6 +69,6 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(APP_PORT);
+  await app.listen(parseInt(env.get<string>('APP_PORT')));
 }
 bootstrap();

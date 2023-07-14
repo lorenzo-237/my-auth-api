@@ -3,8 +3,10 @@ import { Request, Response } from 'express';
 import { TestsService } from './tests.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { Public } from '../utils/decorators';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('tests')
+@ApiTags('testing')
 export class TestsController {
   constructor(private testService: TestsService) {}
   @Public()

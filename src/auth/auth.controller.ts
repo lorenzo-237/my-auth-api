@@ -6,17 +6,34 @@ import {
   Get,
   Req,
   Session,
+  Body,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './guards';
 import { Public } from 'src/utils/decorators';
-
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthEntity } from './entities';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto';
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
-  @Public()
+  constructor(private authService: AuthService) {}
+
+  @Public() // I think public isn't required but it's more intuitive with
   @UseGuards(LocalAuthGuard)
+  @ApiBody({
+    type: LoginDto,
+  })
   @Post('login')
-  async login(@Request() req) {
+  async loginLocal(@Request() req) {
     return req.user;
+  }
+
+  @Public()
+  @Post('login/token')
+  @ApiOkResponse({ type: AuthEntity })
+  async loginJwt(@Body() { username, password }: LoginDto) {
+    return this.authService.loginJwt(username, password);
   }
 
   @Get('session')

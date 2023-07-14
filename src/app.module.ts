@@ -3,10 +3,10 @@ import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { PassportModule } from '@nestjs/passport';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthenticatedGuard } from './auth/guards';
+import { SessionAuthGuard } from './auth/guards';
 import { TestsModule } from './tests/tests.module';
+import { ExtModule } from './ext/ext.module';
 
 @Module({
   imports: [
@@ -14,14 +14,14 @@ import { TestsModule } from './tests/tests.module';
     PrismaModule,
     UsersModule,
     AuthModule,
-    PassportModule.register({ session: true }),
     TestsModule,
+    ExtModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AuthenticatedGuard,
+      useClass: SessionAuthGuard,
     },
   ],
 })
